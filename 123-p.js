@@ -46,17 +46,22 @@ const setCurrent = (v) => {
   return current
 };
 
+
+// like the non-wrapped versions, but return promise instead of invoking callback
 const wrappedFirst = wrapItUpB(first);
+// like the non-wrapped versions, but return promise instead of invoking callback
 const wrappedSecond = wrapItUpB(second);
+// like the non-wrapped versions, but return promise instead of invoking callback
 const wrappedThird = wrapItUpB(third);
 
 console.log(0, current);
-wrappedFirst(setCurrent);
-console.log(1, current);
-wrappedSecond(current, setCurrent);
-console.log(2, current);
-wrappedThird(current, setCurrent);
-console.log(3, current);
+wrappedFirst()
+  .then(setCurrent)
+  .then(wrappedSecond)
+  .then(setCurrent)
+  .then(wrappedThird)
+  .then(setCurrent)
+  .catch((err) => console.log(err));
 
 
 
