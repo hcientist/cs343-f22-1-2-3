@@ -25,14 +25,37 @@ const setCurrent = (v) => {
   current = v;
 };
 
-console.log(0, current);
-first(setCurrent);
-console.log(1, current);
-second(current, setCurrent);
-console.log(2, current);
-third(current, setCurrent);
-console.log(3, current);
+// console.log(0, current);
+// first(setCurrent);
+// console.log(1, current);
+// second(current, setCurrent);
+// console.log(2, current);
+// third(current, setCurrent);
+// console.log(3, current);
 
 // instead of the 3 invocations above, how can we ensure that the functions are invoked in order?
 // (comment out or replace the 3 invocations above with your solution
 
+function doneWithFirst(v) {
+  setCurrent(v);
+  second(current, doneWithSecond);
+}
+
+function doneWithSecond(v) {
+  setCurrent(v);
+  third(current, console.log);
+}
+
+console.log(0, current);
+// first(doneWithFirst);
+
+// more canonical way to do above
+first((v) => {
+  setCurrent(v);
+  second(current, (v) => {
+    setCurrent(v);
+    third(current, (v) => {
+      setCurrent(v);
+    });
+  });
+});
